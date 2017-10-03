@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { extendObservable } from "mobx"
 import { observer } from "mobx-react"
+import GoogleLogin from 'react-google-login';
+
 
 //from app
 import Store from '../store/store';
@@ -31,10 +33,10 @@ class Home extends Component {
 			}
 		});
 
-		console.log(this);
-		
+
 		//register helpers here
 		this.onTextClick = this.onTextClick.bind(this);
+		
 	}
 
 	//lifecycle methods
@@ -72,7 +74,7 @@ class Home extends Component {
 	}
 
 	//helper methods
-	onTextClick(e){
+	onTextClick(e) {
 		this.data.isMounted = !this.data.isMounted;
 	}
 
@@ -81,6 +83,16 @@ class Home extends Component {
 	render() {
 		return (
 			<div>
+				<GoogleLogin
+					clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
+					buttonText="Login"
+					onSuccess={(res)=>{
+						console.log(res);
+					}}
+					onFailure={(err)=>{
+						console.log(err);
+					}}
+				/>,
 				<p onClick={this.onTextClick}>Change State</p>
 				{this.data.isMounted ? 'hi' : 'bye'}
 			</div>
