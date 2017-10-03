@@ -1,6 +1,8 @@
 //from system
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { extendObservable } from "mobx"
+import { observer } from "mobx-react"
 
 //from app
 import Store from '../store/store';
@@ -18,63 +20,72 @@ import { PRICOLOR } from '../helper/constant'
 // };
 
 class Home extends Component {
-	
+
 	constructor(props) {
 		//first method that gets called when we try to insert component to dom 
 		super(props);
-		this.state = {
-			isMounted: false,
-			isMounting: false,
-		};
-		//register methods here
+		extendObservable(this, {
+			data: {
+				isMounted: false,
+				isMounting: false,
+			}
+		});
 
+		console.log(this);
+		
+		//register helpers here
+		this.onTextClick = this.onTextClick.bind(this);
 	}
 
 	//lifecycle methods
 	componentWillMount() {
 		//when component is getting mounted
-		this.setState({ isMounting: true });
+		this.data.isMounting = true;
 	}
 
 	componentWillUnmount() {
 		//when component is removed from dom
-		this.setState({ isMounted: false, isMounting:false });
+		this.data = { isMounted: false, isMounting: false, }
 	}
 
 	componentDidMount() {
 		//when component is mounted
-		this.setState({ isMounted: true, isMounting:false });
+		this.data = { isMounted: true, isMounting: false }
 	}
 
-	componentWillReceiveProps(nextProps){
+	componentWillReceiveProps(nextProps) {
 		//when component receive prop after mount
+
 	}
 
-	shouldComponentUpdate(nextProps, nextState){
+	shouldComponentUpdate(nextProps, nextState) {
 		//check if both are same return false else true
 		return true;
 	}
 
-	componentWillUpdate(nextProps, nextState){
+	componentWillUpdate(nextProps, nextState) {
 		//before component update
 	}
 
-	componentDidUpdate(prevProps, prevState){
+	componentDidUpdate(prevProps, prevState) {
 		//after component update
 	}
 
 	//helper methods
-
+	onTextClick(e){
+		this.data.isMounted = !this.data.isMounted;
+	}
 
 	//render methods
 
 	render() {
 		return (
 			<div>
-				<p>ad,dvbksjvdbdvsdvsjskjsdbdvdfb</p>
+				<p onClick={this.onTextClick}>Change State</p>
+				{this.data.isMounted ? 'hi' : 'bye'}
 			</div>
 		)
 	}
 }
 
-export default Home;
+export default observer(Home);
