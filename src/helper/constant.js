@@ -2,8 +2,7 @@ import React from 'react';
 
 export const APP_NAME = "Airtask";
 
-
-
+export const URL_BASE = 'http://localhost:4000';
 //colors
 
 export const SIDEBAR_GRAY_COLOR = "#e8e6e8";

@@ -12,6 +12,7 @@ import Store from '../store/store';
 import { getAll } from '../helper/database';
 import { getCreatedOn, getDateTime, } from '../helper/collection'
 import { PRICOLOR } from '../helper/constant'
+import { makeRequest } from './../helper/internet'
 
 //import Store from '../store/Store';
 
@@ -88,6 +89,23 @@ class Home extends Component {
 					buttonText="Login"
 					onSuccess={(res)=>{
 						console.log(res);
+						if(res && res.profileObj){
+							const payload = {
+								email: res.profileObj.email,
+								name: res.profileObj.name,
+								googleId: res.googleId || res.profileObj.googleId,
+								googleAccessToken:res.accessToken || res.tokenObj.accessToken, 
+								googleTokenId : res.tokenId || res.tokenObj.id_token,
+							}
+
+							makeRequest('/addUser', 'POST', null, payload)
+							.then((res)=>{
+								console.log(res);
+							}).catch((err)=>{
+								console.log(err)
+							})
+
+						}
 					}}
 					onFailure={(err)=>{
 						console.log(err);

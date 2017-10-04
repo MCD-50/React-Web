@@ -4,6 +4,30 @@ export const getKey = (date) => {
 	return date.replace(/\s/g, '').replace(/:/g, '').replace(/-/g, '');
 }
 
+export const getOption = (url, method, token, data) => {
+	let options = {
+		method: method || 'GET',
+		url: url,
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json',
+			'Access-Control-Allow-Origin': '*',
+			'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+		}
+	};
+
+	if (token) {
+		options.headers['Authorization'] = `Bearer ${token}`
+	}
+
+	if (data) {
+		options['method'] = method || 'POST';
+		options['data'] = data
+	}
+
+	return options;
+}
+
 export const getTextColor = (str) => {
 	if (!str) {
 		return WISTERIA;
