@@ -1,11 +1,11 @@
 const path = require('path');
-var webpack = require('webpack');
 
 var config = {
-	entry: path.resolve(__dirname, './main.js'),
+	entry: ['./main.js'],
 	output: {
-		path: path.resolve(__dirname, './'),
-		filename: 'index.js',
+		path: __dirname,
+		publicPath: '/',
+		filename: 'bundle.js'
 	},
 	devServer: {
 		inline: true,
@@ -16,10 +16,10 @@ var config = {
 			{
 				test: /\.jsx?$/,
 				exclude: /node_modules/,
-				loader: path.resolve(__dirname, './node_modules/babel-loader'),
+				loader: 'babel-loader',
 				query: {
-					presets: ['es2015', 'react']
-			}
+					presets: ['react', 'es2015', 'stage-1']
+				}
 			}, {
 				test: /\.css$/,
 				loader: "style-loader!css-loader"

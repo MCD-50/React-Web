@@ -1,9 +1,11 @@
+"use strict";
+
 //from system
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { extendObservable } from "mobx"
-import { observer } from "mobx-react"
-import GoogleLogin from 'react-google-login';
+import { extendObservable, action } from "mobx"
+import { observer, } from "mobx-react"
+import GoogleLogin from 'clone-react-google-login';
 
 
 //from app
@@ -14,14 +16,6 @@ import { getCreatedOn, getDateTime, } from '../helper/collection'
 import { PRICOLOR } from '../helper/constant'
 import { makeRequest } from './../helper/internet'
 
-//import Store from '../store/Store';
-
-
-// const childContextTypes = {
-// 	notes: React.PropTypes.array,
-// 	tasks: React.PropTypes.array,
-// };
-
 class Home extends Component {
 
 	constructor(props) {
@@ -31,13 +25,18 @@ class Home extends Component {
 			data: {
 				isMounted: false,
 				isMounting: false,
+				isLogged: false,
 			}
 		});
 
-
+		this.state = {
+			isLogged: false,
+		}
+		
 		//register helpers here
 		this.onTextClick = this.onTextClick.bind(this);
-		
+		this.makeDataRequest = this.makeDataRequest.bind(this);
+
 	}
 
 	//lifecycle methods
@@ -48,12 +47,12 @@ class Home extends Component {
 
 	componentWillUnmount() {
 		//when component is removed from dom
-		this.data = { isMounted: false, isMounting: false, }
+		this.data = { isMounted: false, isMounting: false, isLogged: false }
 	}
 
 	componentDidMount() {
 		//when component is mounted
-		this.data = { isMounted: true, isMounting: false }
+		this.data = { isMounted: true, isMounting: false, isLogged: false, }
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -76,7 +75,31 @@ class Home extends Component {
 
 	//helper methods
 	onTextClick(e) {
+		console.log(this);
 		this.data.isMounted = !this.data.isMounted;
+	}
+
+	makeDataRequest(res) {
+		if (res && res.profileObj) {
+			const payload = {
+				email: res.profileObj.email,
+				name: res.profileObj.name,
+				googleId: res.googleId || res.profileObj.googleId,
+				googleAccessToken: res.accessToken || res.tokenObj.accessToken,
+				googleTokenId: res.tokenId || res.tokenObj.id_token,
+			}
+
+			makeRequest('/addUser', 'POST', null, payload)
+				.then((result) => {
+					if (result && result.res.data && result.res.data.message && result.res.data.message.isLogged) {
+						this.data.isLogged = true
+					} else {
+						
+					}
+				}).catch((err) => {
+					console.log(err)
+				})
+		}
 	}
 
 	//render methods
@@ -87,32 +110,14 @@ class Home extends Component {
 				<GoogleLogin
 					clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
 					buttonText="Login"
-					onSuccess={(res)=>{
-						console.log(res);
-						if(res && res.profileObj){
-							const payload = {
-								email: res.profileObj.email,
-								name: res.profileObj.name,
-								googleId: res.googleId || res.profileObj.googleId,
-								googleAccessToken:res.accessToken || res.tokenObj.accessToken, 
-								googleTokenId : res.tokenId || res.tokenObj.id_token,
-							}
-
-							makeRequest('/addUser', 'POST', null, payload)
-							.then((res)=>{
-								console.log(res);
-							}).catch((err)=>{
-								console.log(err)
-							})
-
-						}
-					}}
-					onFailure={(err)=>{
+					onSuccess={(res) => this.makeDataRequest(res)}
+					onFailure={(err) => {
 						console.log(err);
 					}}
 				/>,
 				<p onClick={this.onTextClick}>Change State</p>
 				{this.data.isMounted ? 'hi' : 'bye'}
+				{this.data.isLogged ? 'Logged' : 'Not logged'}
 			</div>
 		)
 	}
