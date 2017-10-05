@@ -1,4 +1,4 @@
-import { TOGGLE_LOGIN, TOGGLE_SIDEBAR } from '../../helper/constant'
+import { TOGGLE_LOGIN, TOGGLE_SIDEBAR } from '../../helper/constant';
 
 const initialState = {
 	isLoggedIn: false,
@@ -7,18 +7,17 @@ const initialState = {
 
 const appReducer = (state = initialState, action) => {
 	switch (action.type) {
-		
 		case TOGGLE_LOGIN:
-			state.isLoggedIn = !state.isLoggedIn
+			state.isLoggedIn = !state.isLoggedIn;
 			return state;
 
 		case TOGGLE_SIDEBAR:
-			state.isSidebarOpen = !state.isSidebarOpen
+			state.isSidebarOpen = !state.isSidebarOpen;
 			return state;
 
 		default:
-			return state
+			return state;
 	}
-}
+};
 
 export default appReducer;

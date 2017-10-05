@@ -15,4 +15,4 @@ export const makeRequest = (endpoint, method = null, token = null, data = null) 
 				reject({ error: err, res: null });
 			});
 	});
-}
+};

@@ -2,7 +2,7 @@ import { CARROT, PETER_RIVER, WISTERIA, ALIZARIN, TURQUOISE, MIDNIGHT_BLUE, INDI
 
 export const getKey = (date) => {
 	return date.replace(/\s/g, '').replace(/:/g, '').replace(/-/g, '');
-}
+};
 
 export const getOption = (url, method, token, data) => {
 	let options = {
@@ -17,16 +17,16 @@ export const getOption = (url, method, token, data) => {
 	};
 
 	if (token) {
-		options.headers['Authorization'] = `Bearer ${token}`
+		options.headers['Authorization'] = `Bearer ${token}`;
 	}
 
 	if (data) {
 		options['method'] = method || 'POST';
-		options['data'] = data
+		options['data'] = data;
 	}
 
 	return options;
-}
+};
 
 export const getTextColor = (str) => {
 	if (!str) {
@@ -34,7 +34,7 @@ export const getTextColor = (str) => {
 	}
 	const array = [CARROT, PETER_RIVER, WISTERIA, ALIZARIN, TURQUOISE, MIDNIGHT_BLUE, INDIANRED, TEAL, NAVY, PURPLE];
 	return array[str.length % array.length];
-}
+};
 
 export const getDateTime = () => {
 	let today = new Date();
@@ -46,7 +46,7 @@ export const getDateTime = () => {
 		mm = '0' + mm.toString();
 	var yyyy = today.getFullYear();
 	return yyyy + '-' + mm + '-' + dd + ' ' + parseTime(today.getHours(), today.getMinutes(), today.getSeconds())
-}
+};
 
 const parseTime = (hh, mm, ss) => {
 	if (hh.toString().length < 2)
@@ -56,7 +56,7 @@ const parseTime = (hh, mm, ss) => {
 	if (ss.toString().length < 2)
 		ss = '0' + ss;
 	return hh + ':' + mm + ':' + ss;
-}
+};
 
 const months = [
 	'January',
@@ -71,10 +71,10 @@ const months = [
 	'October',
 	'November',
 	'December'
-]
+];
 
-export function getCreatedOn(createdOn) {
+export const getCreatedOn = (createdOn) => {
 	let array = createdOn.split(' ')[0].split('-');
 	let month = months[parseInt(array[1] - 1)];
 	return array[2] + ' ' + month + ', ' + array[0];
-}
+};

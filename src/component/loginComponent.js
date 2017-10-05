@@ -3,20 +3,16 @@
 //from system
 import React, { Component } from 'react';
 import GoogleLogin from 'clone-react-google-login';
-import { Link } from 'react-router-dom';
-import { extendObservable, action } from "mobx"
-import { observer, } from "mobx-react"
-import PropTypes from 'prop-types'
+import { extendObservable } from "mobx";
+import { observer, } from "mobx-react";
+import PropTypes from 'prop-types';
 
-import { getAll } from '../helper/database';
-import { getCreatedOn, getDateTime, } from '../helper/collection'
-import { PRICOLOR } from '../helper/constant'
-import { makeRequest } from './../helper/internet'
+import { makeRequest } from './../helper/internet';
 
 const propTypes = {
 	appReducer: PropTypes.object.isRequired,
 	appAction: PropTypes.object.isRequired,
-}
+};
 
 class LoginComponent extends Component {
 
@@ -46,12 +42,12 @@ class LoginComponent extends Component {
 
 	componentWillUnmount() {
 		//when component is removed from dom
-		this.data = { isMounted: false, isMounting: false, isLogged: false }
+		this.data = { isMounted: false, isMounting: false, isLogged: false };
 	}
 
 	componentDidMount() {
 		//when component is mounted
-		this.data = { isMounted: true, isMounting: false, isLogged: false, }
+		this.data = { isMounted: true, isMounting: false, isLogged: false, };
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -74,8 +70,7 @@ class LoginComponent extends Component {
 
 	//helper methods
 	onTextClick(e) {
-
-		console.log(this.props);
+		console.log(this.props, e);
 		this.props.appAction.toogleLogin();
 		this.props.appAction.toogleSidebar();
 		//this.data.isMounted = !this.data.isMounted;
@@ -89,18 +84,16 @@ class LoginComponent extends Component {
 				googleId: res.googleId || res.profileObj.googleId,
 				googleAccessToken: res.accessToken || res.tokenObj.accessToken,
 				googleTokenId: res.tokenId || res.tokenObj.id_token,
-			}
+			};
 
 			makeRequest('/addUser', 'POST', null, payload)
 				.then((result) => {
 					if (result && result.res.data && result.res.data.message && result.res.data.message.isLogged) {
-						this.data.isLogged = true
-					} else {
-						
+						this.data.isLogged = true;
 					}
 				}).catch((err) => {
-					console.log(err)
-				})
+					console.log(err);
+				});
 		}
 	}
 
@@ -121,8 +114,9 @@ class LoginComponent extends Component {
 				{this.data.isMounted ? 'hi' : 'bye'}
 				{this.data.isLogged ? 'Logged' : 'Not logged'}
 			</div>
-		)
+		);
 	}
 }
 
+LoginComponent.propTypes = propTypes;
 export default observer(LoginComponent);

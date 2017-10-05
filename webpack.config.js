@@ -1,6 +1,5 @@
-const path = require('path');
 
-var config = {
+module.exports = {
 	entry: ['./main.js'],
 	output: {
 		path: __dirname,
@@ -49,5 +48,4 @@ var config = {
 			}
 		]
 	}
-}
-module.exports = config;
+};
