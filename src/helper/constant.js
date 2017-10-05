@@ -21,3 +21,10 @@ export const INDIANRED = '#CD5C5C';
 export const TEAL = '#008080';
 export const NAVY = '#000080';
 export const PURPLE = '#800080';
+
+
+
+//action constants
+/********** base constant ***********/
+export const TOGGLE_LOGIN = 'TOGGLE_LOGIN'
+export const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR'

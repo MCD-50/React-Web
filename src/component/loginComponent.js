@@ -2,25 +2,28 @@
 
 //from system
 import React, { Component } from 'react';
+import GoogleLogin from 'clone-react-google-login';
 import { Link } from 'react-router-dom';
 import { extendObservable, action } from "mobx"
 import { observer, } from "mobx-react"
-import GoogleLogin from 'clone-react-google-login';
-
-
-//from app
-import Store from '../store/store';
+import PropTypes from 'prop-types'
 
 import { getAll } from '../helper/database';
 import { getCreatedOn, getDateTime, } from '../helper/collection'
 import { PRICOLOR } from '../helper/constant'
 import { makeRequest } from './../helper/internet'
 
-class Home extends Component {
+const propTypes = {
+	appReducer: PropTypes.object.isRequired,
+	appAction: PropTypes.object.isRequired,
+}
+
+class LoginComponent extends Component {
 
 	constructor(props) {
 		//first method that gets called when we try to insert component to dom 
 		super(props);
+		
 		extendObservable(this, {
 			data: {
 				isMounted: false,
@@ -29,10 +32,6 @@ class Home extends Component {
 			}
 		});
 
-		this.state = {
-			isLogged: false,
-		}
-		
 		//register helpers here
 		this.onTextClick = this.onTextClick.bind(this);
 		this.makeDataRequest = this.makeDataRequest.bind(this);
@@ -75,8 +74,11 @@ class Home extends Component {
 
 	//helper methods
 	onTextClick(e) {
-		console.log(this);
-		this.data.isMounted = !this.data.isMounted;
+
+		console.log(this.props);
+		this.props.appAction.toogleLogin();
+		this.props.appAction.toogleSidebar();
+		//this.data.isMounted = !this.data.isMounted;
 	}
 
 	makeDataRequest(res) {
@@ -123,4 +125,4 @@ class Home extends Component {
 	}
 }
 
-export default observer(Home);
+export default observer(LoginComponent);
